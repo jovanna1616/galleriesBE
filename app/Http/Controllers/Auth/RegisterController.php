@@ -6,6 +6,10 @@ use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 
 class RegisterController extends Controller
 {
@@ -45,27 +49,61 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
-    protected function validator(array $data)
+    public function register(Request $request)
     {
-        return Validator::make($data, [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
+        // $rules = [
+        //     'first_name' => 'required',
+        //     'last_name' => 'required',
+        //     'email' => 'required|email|unique:user',
+        //     'password' => 'required|confirmed|min:8',
+        //     'password_confirmation' => 'required|same:password',
+        //     'accepted_terms' => 'required'
+        // ];
+        
+        if (!$request->has(['first_name', 'last_name', 'email', 'password', 'password_confirmation', 'accepted_terms'])) {
+            $error = $validator->messages()->toJson();
+            return response()->json(['success'=> false, 'error'=> $error]);
+        }
+        // die('OK');
+        // $input = $request->only(
+        //     'first_name',
+        //     'last_name',
+        //     'email',
+        //     'password',
+        //     'password_confirmation',
+        //     'accepted_terms'
+        // );
+        // die(var_dump($input));
+        // $validator = Validator::make($input, $rules);
+        // if($validator->fails()) {
+        //     $error = $validator->messages()->toJson();
+        //     return response()->json(['success'=> false, 'error'=> $error]);
+        // }
+        $request->validate([
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'email' => 'required|email|unique:user',
+            'password' => 'required|confirmed|min:8',
+            'password_confirmation' => 'required|same:password',
+            'accepted_terms' => 'required'
         ]);
-    }
-
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\User
-     */
-    protected function create(array $data)
-    {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-        ]);
+        $user = new User();       
+        // $user = User::create([
+        //     'first_name' => $request->firstName, 
+        //     'last_name' => $request->lastName, 
+        //     'email' => $request->email, 
+        //     'password' => bcrypt($request->password), 
+        //     'password_confirmation' => bcrypt($request->passwordConfirmation), 
+        //     'accepted_terms' => $request->acceptedTerms
+        // ]);
+        $user->first_name = request('firstName');
+        $user->last_name = request('lastName');
+        $user->email = request('email');
+        $user->password = bcrypt(request('password'));
+        $user->password_confirmation = bcrypt(request('passwordConfirmation'));
+        $user->accepted_terms = request('acceptedTerms');
+        
+        $user->save();
+        return $user;
     }
 }
