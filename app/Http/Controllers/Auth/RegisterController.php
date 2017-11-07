@@ -10,6 +10,7 @@ use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Input;
 
 class RegisterController extends Controller
 {
@@ -60,10 +61,7 @@ class RegisterController extends Controller
         //     'accepted_terms' => 'required'
         // ];
         
-        if (!$request->has(['first_name', 'last_name', 'email', 'password', 'password_confirmation', 'accepted_terms'])) {
-            $error = $validator->messages()->toJson();
-            return response()->json(['success'=> false, 'error'=> $error]);
-        }
+    
         // die('OK');
         // $input = $request->only(
         //     'first_name',
@@ -79,14 +77,27 @@ class RegisterController extends Controller
         //     $error = $validator->messages()->toJson();
         //     return response()->json(['success'=> false, 'error'=> $error]);
         // }
-        $request->validate([
+        // $request->validate([
+        //     'first_name' => 'required',
+        //     'last_name' => 'required',
+        //     'email' => 'required|email|unique:users',
+        //     'password' => 'required|confirmed|min:8',
+        //     'password_confirmation' => 'required|same:password',
+        //     'accepted_terms' => 'required'
+        // ]);
+        $validator = Validator::make(Input::all(), [
             'first_name' => 'required',
             'last_name' => 'required',
-            'email' => 'required|email|unique:user',
+            'email' => 'required|email|unique:users',
             'password' => 'required|confirmed|min:8',
             'password_confirmation' => 'required|same:password',
             'accepted_terms' => 'required'
         ]);
+
+        if($validator->fails()) {
+            $error = $validator->messages()->toJson();
+            return response()->json(['success'=> false, 'error'=> $error]);
+        }
         $user = new User();       
         // $user = User::create([
         //     'first_name' => $request->firstName, 
@@ -96,12 +107,11 @@ class RegisterController extends Controller
         //     'password_confirmation' => bcrypt($request->passwordConfirmation), 
         //     'accepted_terms' => $request->acceptedTerms
         // ]);
-        $user->first_name = request('firstName');
-        $user->last_name = request('lastName');
+        $user->first_name = request('first_name');
+        $user->last_name = request('last_name');
         $user->email = request('email');
         $user->password = bcrypt(request('password'));
-        $user->password_confirmation = bcrypt(request('passwordConfirmation'));
-        $user->accepted_terms = request('acceptedTerms');
+        $user->accepted_terms = request('accepted_terms');
         
         $user->save();
         return $user;

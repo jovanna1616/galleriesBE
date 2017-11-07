@@ -19,7 +19,6 @@ class CreateUsersTable extends Migration
             $table->string('last_name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('password_confirm');
             $table->boolean('accepted_terms')->default(false);
             $table->rememberToken();
             $table->timestamps();
