@@ -52,45 +52,11 @@ class RegisterController extends Controller
      */
     public function register(Request $request)
     {
-        // $rules = [
-        //     'first_name' => 'required',
-        //     'last_name' => 'required',
-        //     'email' => 'required|email|unique:user',
-        //     'password' => 'required|confirmed|min:8',
-        //     'password_confirmation' => 'required|same:password',
-        //     'accepted_terms' => 'required'
-        // ];
-        
-    
-        // die('OK');
-        // $input = $request->only(
-        //     'first_name',
-        //     'last_name',
-        //     'email',
-        //     'password',
-        //     'password_confirmation',
-        //     'accepted_terms'
-        // );
-        // die(var_dump($input));
-        // $validator = Validator::make($input, $rules);
-        // if($validator->fails()) {
-        //     $error = $validator->messages()->toJson();
-        //     return response()->json(['success'=> false, 'error'=> $error]);
-        // }
-        // $request->validate([
-        //     'first_name' => 'required',
-        //     'last_name' => 'required',
-        //     'email' => 'required|email|unique:users',
-        //     'password' => 'required|confirmed|min:8',
-        //     'password_confirmation' => 'required|same:password',
-        //     'accepted_terms' => 'required'
-        // ]);
         $validator = Validator::make(Input::all(), [
             'first_name' => 'required',
             'last_name' => 'required',
             'email' => 'required|email|unique:users',
-            'password' => 'required|confirmed|min:8',
-            // 'password' => 'required|confirmed|min:8|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/',
+            'password' => 'required|confirmed|min:8|regex:`\d`',
             'password_confirmation' => 'required|same:password',
             'accepted_terms' => 'required'
         ]);
@@ -100,14 +66,6 @@ class RegisterController extends Controller
             return response()->json(['success'=> false, 'error'=> $error]);
         }
         $user = new User();       
-        // $user = User::create([
-        //     'first_name' => $request->firstName, 
-        //     'last_name' => $request->lastName, 
-        //     'email' => $request->email, 
-        //     'password' => bcrypt($request->password), 
-        //     'password_confirmation' => bcrypt($request->passwordConfirmation), 
-        //     'accepted_terms' => $request->acceptedTerms
-        // ]);
         $user->first_name = request('first_name');
         $user->last_name = request('last_name');
         $user->email = request('email');

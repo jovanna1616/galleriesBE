@@ -46,6 +46,12 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
+    public function galleries() {
+
+        return $this->hasMany(Gallery::class, 'user_id');
+
+    }
+
     /**
      * The attributes that should be hidden for arrays.
      *
