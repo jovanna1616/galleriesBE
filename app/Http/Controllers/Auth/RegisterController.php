@@ -90,6 +90,7 @@ class RegisterController extends Controller
             'last_name' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required|confirmed|min:8',
+            // 'password' => 'required|confirmed|min:8|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/',
             'password_confirmation' => 'required|same:password',
             'accepted_terms' => 'required'
         ]);
