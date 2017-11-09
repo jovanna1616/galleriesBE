@@ -18,9 +18,9 @@ use Illuminate\Http\Request;
 // });
 
 // route za sve korisnike
-Route::post('/register', 'Auth\RegisterController@register');
-Route::post('/login', 'Auth\LoginController@authenticate');
-Route::get('/galleries', 'GalleryController@index');
+Route::middleware('api')->post('/register', 'Auth\RegisterController@register');
+Route::middleware('api')->post('/login', 'Auth\LoginController@authenticate');
+Route::middleware('api')->get('/galleries', 'GalleryController@index');
 
 // route za autorizovane korisnike
 Route::middleware('jwt')->get('/galleries/{id}', 'GalleryController@show');
