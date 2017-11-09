@@ -35,41 +35,46 @@ class GalleryController extends Controller
         // for testing:
         $gallery->user_id = 2;
 
-        // opcija za dodavanje novih slika
-        $image = new Image();
-        $rules = Image::STORE_RULES;
-        $request->validate($rules);
-        $image->link = $request->input('link');
         
         // pre cuvanja provera ukoliko vec postoji
         $existingGallery = Gallery::where('name', '=', Input::get('name'))->first();
         if (!$existingGallery) {
             $gallery->save();
-            $image->gallery_id = $gallery->id;
-            $image->save();
+
+            // opcija za dodavanje novih slika sa FE
+            $images = $request->input('links');
+
+            foreach ($images as $url) {
+                $image = new Image();
+                $image->link = $url;
+                $image->gallery_id = $gallery->id;
+                $image->save();
+            }
             return $gallery;
         }
         echo ('The gallery with same name is already in database.');
     }
+
     public function update(Request $request, $id) {
-    	$gallery = Gallery::with('images')->find($id);
-        // var_dump($gallery->images);
-        // die();
-        // $images = $gallery->images;
-        // var_dump($images);
-        // die();
-        // foreach ($images as $image => $link) {
-        //     $links[] = $link->link;
-        // }
-        // $images = Image::where('gallery_id', '=', $id)->get();
+    	$gallery = Gallery::find($id);
+
+        if(! $gallery) {
+            return response()->json(['message' => 'Gallery not found'], 404);
+        }
         
+        $gallery->images()->delete();
+        $images = $request->input('images');
+        $image = new Image();
+        $rules = Image::STORE_RULES;
+        $request->validate($rules);
+        $image->link = $request->input('link');
        
-    	if(! $gallery) {
-    		return response()->json(['message' => 'Gallery not found'], 404);
-    	}
+    	
     	$gallery->name = $request->input('name');
     	$gallery->description = $request->input('description');
     	$gallery->save();
+
+        $image->gallery_id = $gallery->id;
         $image->save();
     	return $gallery;
     }

@@ -14,6 +14,7 @@ class Gallery extends Model
     const STORE_RULES = [
         'name' => 'required|min:2|max:255',
         'description' => 'max:1000',
+        'links' => 'required'
     ];
 
     public function user() {
