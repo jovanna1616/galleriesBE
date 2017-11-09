@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Gallery extends Model
 {
-    protected $guarded = ['id'];
+    protected $guarded = ['id', 'user_id'];
     protected $fillable = ['name', 'description'];
 
     const STORE_RULES = [

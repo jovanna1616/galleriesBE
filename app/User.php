@@ -1,6 +1,7 @@
 <?php
 
 namespace App;
+use App\Comment;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -49,7 +50,9 @@ class User extends Authenticatable implements JWTSubject
     public function galleries() {
 
         return $this->hasMany(Gallery::class, 'user_id');
-
+    }
+    public function comments() {
+        return $this->hasMany(Comment::class, 'author_id');
     }
 
     /**
