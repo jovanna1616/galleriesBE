@@ -23,17 +23,7 @@ class User extends Authenticatable implements JWTSubject
         'first_name', 'last_name', 'email', 'password', 'password_confirm', 'acceptedTerms'
     ];
     protected $casts = ['accepted_terms' => 'boolean'];
-    // const STORE_RULES = [
-    //     'first_name' => 'required',
-    //     'last_name' => 'required',
-    //     'email' => 'required | email',
-    //     // size:
-    //     // required|min:6|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/
-    //     // https://stackoverflow.com/questions/3180354/regex-check-if-string-contains-at-least-one-digit
-    //     'password' => 'required | confirmed | min:8',
-    //     'accepted_terms' => 'required'
-    // ];
-
+    
     // mutator
     public function setAcceptedTermsMutator($value){
         $this->attributes['accepted_terms'] = (boolean)$value;

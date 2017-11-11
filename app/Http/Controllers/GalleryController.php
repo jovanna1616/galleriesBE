@@ -15,7 +15,7 @@ class GalleryController extends Controller
     	$galleries = Gallery::with('images')
             ->with('user')
             ->orderByRaw('created_at DESC')
-            ->paginate(10);
+            ->paginate();
     	return $galleries;
     }
     public function show($id) {
