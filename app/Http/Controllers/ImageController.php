@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 
 class ImageController extends Controller
 {
-	public function index() {
-		$images = Image::all();
-		return $images;
-	}
+	// public function index() {
+	// 	$images = Image::all();
+	// 	return $images;
+	// }
 }

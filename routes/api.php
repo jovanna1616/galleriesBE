@@ -27,8 +27,6 @@ Route::middleware('jwt')->get('/galleries/{id}', 'GalleryController@show');
 Route::middleware('jwt')->post('/create', 'GalleryController@store');
 Route::middleware('jwt')->put('/edit-gallery/{id}', 'GalleryController@update');
 Route::middleware('jwt')->delete('/galleries/{id}', 'GalleryController@destroy');
-Route::middleware('api')->get('/authors', 'UserController@index');
-Route::middleware('api')->get('/images', 'ImageController@index');
 Route::middleware('jwt')->get('/authors/{id}', 'UserController@show');
 Route::middleware('jwt')->post('/comments', 'CommentController@store');
 Route::middleware('jwt')->delete('/comments/{id}', 'CommentController@destroy');
