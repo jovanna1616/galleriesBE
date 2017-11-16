@@ -11,7 +11,7 @@ class Comment extends Model
     protected $fillable = ['text', 'author_id'];
 
     const STORE_RULES = [
-        'text' => 'required|max:1000',
+        'text' => 'max:1000',
     ];
     
     public function user() {

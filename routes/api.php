@@ -21,7 +21,6 @@ use Illuminate\Http\Request;
 Route::middleware('api')->post('/register', 'Auth\RegisterController@register');
 Route::middleware('api')->post('/login', 'Auth\LoginController@authenticate');
 Route::middleware('api')->get('/galleries', 'GalleryController@index');
-
 // route za autorizovane korisnike
 Route::middleware('jwt')->get('/galleries/{id}', 'GalleryController@show');
 Route::middleware('jwt')->post('/create', 'GalleryController@store');
